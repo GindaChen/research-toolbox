@@ -1,0 +1,6 @@
+# Deploy dependencies
+modal
+fastapi[standard]
+uvicorn
+pydantic
+pydantic-settings
