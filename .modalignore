@@ -1,0 +1,11 @@
+node_modules/
+.git/
+__pycache__/
+dist/
+.worktrees/
+.venv/
+.env
+.DS_Store
+*.pyc
+.mypy_cache/
+.pytest_cache/

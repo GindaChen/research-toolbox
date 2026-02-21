@@ -22,13 +22,8 @@ image = (
         "apt-get install -y nodejs",
     )
     .pip_install("fastapi[standard]", "uvicorn", "pydantic", "pydantic-settings")
-    # Copy the full repo into the image
-    .add_local_dir(".", "/app", condition=lambda path: (
-        not any(ignore in path for ignore in [
-            "node_modules", ".git", "__pycache__", "dist", ".worktrees",
-            ".venv", ".env", ".DS_Store",
-        ])
-    ))
+    # Copy the repo into the image (filtered by .modalignore)
+    .add_local_dir(".", "/app")
     # Build frontend inside the image
     .run_commands(
         "cd /app/frontend && npm install --prefer-offline --no-audit && npm run build",
