@@ -1,0 +1,53 @@
+name: Research Idea
+description: Log a research idea or experiment proposal
+title: "[Idea] "
+labels: ["type:research-idea"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Research Idea"
+  - type: textarea
+    id: hypothesis
+    attributes:
+      label: Hypothesis
+      description: One-sentence hypothesis
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why might this work?
+    validations:
+      required: true
+  - type: textarea
+    id: experiment
+    attributes:
+      label: Experiment Plan
+      description: How to test this idea
+      placeholder: |
+        1. Setup: ...
+        2. Run: ...
+        3. Evaluate: ...
+    validations:
+      required: false
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Expected Impact
+      options:
+        - low
+        - medium
+        - high
+    validations:
+      required: false
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort
+      options:
+        - small
+        - medium
+        - large
+    validations:
+      required: false
