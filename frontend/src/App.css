@@ -1,55 +1,208 @@
+/* ── App Layout: Dense Linear ── */
+
 .app {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    background: var(--bg-primary);
 }
 
-.app-header {
+/* ── Nav Bar (compact, breadcrumb-style) ── */
+.nav-bar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 0.75rem 1.5rem;
+    height: 38px;
+    padding: 0 12px;
     background: var(--bg-secondary);
     border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 50;
 }
 
-.app-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.app-nav {
+.nav-left {
     display: flex;
-    gap: 0.25rem;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
 }
 
-.nav-tab {
-    padding: 0.5rem 1rem;
+.nav-logo {
+    font-size: 14px;
+}
+
+.nav-title {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.nav-sep {
+    color: var(--text-tertiary);
+    font-weight: 300;
+}
+
+.nav-view {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.nav-shortcut {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    transition: background 0.1s;
+}
+
+.nav-btn:hover {
+    background: var(--bg-hover);
+}
+
+/* ── Main Layout (fixed split) ── */
+.main-layout {
+    flex: 1;
+    display: flex;
+    overflow: hidden;
+}
+
+.kanban-area {
+    flex: 1;
+    overflow: hidden;
+    transition: none;
+}
+
+.kanban-area.collapsed {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ── Detail Panel (fixed width, no animation) ── */
+.detail-panel {
+    width: 420px;
+    min-width: 420px;
+    background: var(--bg-panel);
+    border-left: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.panel-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.panel-id {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    font-family: monospace;
+    flex-shrink: 0;
+}
+
+.panel-task-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+}
+
+.panel-close {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     background: transparent;
     color: var(--text-secondary);
     cursor: pointer;
-    border-radius: 0.5rem;
-    font-size: 0.875rem;
-    transition: all 0.2s ease;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    flex-shrink: 0;
 }
 
-.nav-tab:hover {
-    background: var(--bg-tertiary);
+.panel-close:hover {
+    background: var(--bg-hover);
     color: var(--text-primary);
 }
 
-.nav-tab.active {
-    background: var(--accent-primary);
-    color: white;
+/* ── Panel Tabs ── */
+.panel-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
 }
 
-.app-content {
+.ptab {
+    padding: 6px 14px;
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: color 0.1s;
+    font-family: inherit;
+}
+
+.ptab:hover {
+    color: var(--text-primary);
+}
+
+.ptab.active {
+    color: var(--accent);
+    border-bottom-color: var(--accent);
+}
+
+.panel-body {
     flex: 1;
-    display: flex;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ── Responsive ── */
+@media (max-width: 768px) {
+    .detail-panel {
+        position: fixed;
+        top: 38px;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        min-width: unset;
+        z-index: 40;
+        box-shadow: -4px 0 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .kanban-area.collapsed {
+        display: none;
+    }
 }

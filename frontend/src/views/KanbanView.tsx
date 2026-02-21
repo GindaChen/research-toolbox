@@ -1,78 +1,80 @@
-import type { Task, TaskStatus } from '@/types'
+import type { Task, TaskStatus } from '../types'
 import './KanbanView.css'
 
-const COLUMNS: { status: TaskStatus; label: string; emoji: string }[] = [
-    { status: 'backlog', label: 'Backlog', emoji: '📥' },
-    { status: 'todo', label: 'To Do', emoji: '📋' },
-    { status: 'in-progress', label: 'In Progress', emoji: '🔄' },
-    { status: 'review', label: 'Review', emoji: '👀' },
-    { status: 'done', label: 'Done', emoji: '✅' },
+const COLUMNS: { status: TaskStatus; label: string; dot: string }[] = [
+    { status: 'backlog', label: 'Backlog', dot: '#484f58' },
+    { status: 'todo', label: 'To do', dot: 'var(--info)' },
+    { status: 'in-progress', label: 'In progress', dot: 'var(--warning)' },
+    { status: 'review', label: 'In review', dot: 'var(--accent)' },
+    { status: 'done', label: 'Done', dot: 'var(--success)' },
 ]
 
-// Placeholder tasks for development
 const MOCK_TASKS: Task[] = [
-    {
-        id: '1',
-        title: 'Set up W&B integration',
-        description: 'Connect experiment tracking with Weights & Biases API',
-        status: 'todo',
-        priority: 'p1-high',
-        labels: ['type:extension', 'area:backend'],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-    },
-    {
-        id: '2',
-        title: 'Design chat streaming protocol',
-        description: 'Define WebSocket message format for agentic chat',
-        status: 'in-progress',
-        priority: 'p1-high',
-        labels: ['type:feature', 'area:backend'],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-    },
-    {
-        id: '3',
-        title: 'Implement drag-and-drop',
-        description: 'Add drag-and-drop for Kanban cards between columns',
-        status: 'backlog',
-        priority: 'p2-medium',
-        labels: ['type:feature', 'area:frontend'],
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-    },
+    { id: '1', title: 'Set up W&B integration', description: 'Connect experiment tracking with W&B API', status: 'todo', priority: 'p1-high', labels: ['extension', 'backend'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '2', title: 'Design chat streaming protocol', description: 'Define WebSocket message format', status: 'in-progress', priority: 'p1-high', labels: ['feature', 'backend'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '3', title: 'Implement drag-and-drop', description: 'Add DnD for cards between columns', status: 'backlog', priority: 'p2-medium', labels: ['feature', 'frontend'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '4', title: 'Add loss spike alert', description: 'Detect sudden loss increases', status: 'todo', priority: 'p2-medium', labels: ['extension'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '5', title: 'Research LoRA fine-tuning', description: 'r16/a32 configs for 7B', status: 'review', priority: 'p1-high', labels: ['research'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '6', title: 'Fix login redirect', description: 'Redirect to /dashboard', status: 'done', priority: 'p0-critical', labels: ['bug'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
+    { id: '7', title: 'Scheduler priority queue', description: 'Time estimation + GPU allocation', status: 'backlog', priority: 'p2-medium', labels: ['extension'], created_at: new Date().toISOString(), updated_at: new Date().toISOString() },
 ]
 
-export function KanbanView() {
+interface KanbanViewProps {
+    onTaskClick: (task: Task) => void
+    selectedTaskId?: string
+}
+
+const PRIORITY_ICONS: Record<string, string> = {
+    'p0-critical': '🔴',
+    'p1-high': '🟠',
+    'p2-medium': '🟡',
+    'p3-low': '⚪',
+}
+
+export function KanbanView({ onTaskClick, selectedTaskId }: KanbanViewProps) {
     return (
         <div className="kanban">
-            {COLUMNS.map((col) => (
-                <div key={col.status} className="kanban-column">
-                    <div className="column-header">
-                        <span className="column-emoji">{col.emoji}</span>
-                        <span className="column-title">{col.label}</span>
-                        <span className="column-count">
-                            {MOCK_TASKS.filter((t) => t.status === col.status).length}
-                        </span>
-                    </div>
-                    <div className="column-body">
-                        {MOCK_TASKS.filter((t) => t.status === col.status).map((task) => (
-                            <div key={task.id} className="kanban-card">
-                                <div className="card-title">{task.title}</div>
-                                <div className="card-desc">{task.description}</div>
-                                <div className="card-labels">
-                                    {task.labels.map((label) => (
-                                        <span key={label} className="card-label">{label}</span>
-                                    ))}
-                                </div>
-                                <div className={`card-priority priority-${task.priority}`}>
-                                    {task.priority}
-                                </div>
+            <div className="kanban-toolbar">
+                <span className="toolbar-label">Board</span>
+                <span className="toolbar-count">{MOCK_TASKS.length} issues</span>
+            </div>
+            <div className="kanban-columns">
+                {COLUMNS.map((col) => {
+                    const tasks = MOCK_TASKS.filter((t) => t.status === col.status)
+                    return (
+                        <div key={col.status} className="k-col">
+                            <div className="k-col-header">
+                                <span className="k-dot" style={{ background: col.dot }} />
+                                <span className="k-col-name">{col.label}</span>
+                                <span className="k-col-count">{tasks.length}</span>
+                                <button className="k-col-add" data-tooltip="Add task">+</button>
                             </div>
-                        ))}
-                    </div>
-                </div>
-            ))}
+                            <div className="k-col-body">
+                                {tasks.map((task) => (
+                                    <button
+                                        key={task.id}
+                                        className={`k-card ${selectedTaskId === task.id ? 'selected' : ''}`}
+                                        onClick={() => onTaskClick(task)}
+                                    >
+                                        <div className="k-card-row">
+                                            <span className="k-priority" data-tooltip={task.priority}>
+                                                {PRIORITY_ICONS[task.priority]}
+                                            </span>
+                                            <span className="k-card-title">{task.title}</span>
+                                        </div>
+                                        <div className="k-card-meta">
+                                            <span className="k-id">RT-{task.id}</span>
+                                            {task.labels.map(l => (
+                                                <span key={l} className="k-label">{l}</span>
+                                            ))}
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+                    )
+                })}
+            </div>
         </div>
     )
 }
