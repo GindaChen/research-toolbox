@@ -1,0 +1,40 @@
+name: Extension Proposal
+description: Propose a new extension
+title: "[Extension] "
+labels: ["type:extension"]
+body:
+  - type: markdown
+    attributes:
+      value: "## Extension Proposal"
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What does this extension do?
+    validations:
+      required: true
+  - type: textarea
+    id: features
+    attributes:
+      label: Planned Features
+      description: List the features this extension will provide
+      placeholder: |
+        - Feature 1
+        - Feature 2
+    validations:
+      required: true
+  - type: textarea
+    id: integration
+    attributes:
+      label: Integration Points
+      description: What external services or APIs does it connect to?
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Estimated Effort
+      options:
+        - small
+        - medium
+        - large
+    validations:
+      required: false

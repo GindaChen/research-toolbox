@@ -1,0 +1,117 @@
+.kanban {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+    overflow-x: auto;
+    flex: 1;
+}
+
+.kanban-column {
+    min-width: 260px;
+    max-width: 300px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background: var(--bg-secondary);
+    border-radius: 0.75rem;
+    border: 1px solid var(--border);
+}
+
+.column-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid var(--border);
+}
+
+.column-emoji {
+    font-size: 1rem;
+}
+
+.column-title {
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.column-count {
+    margin-left: auto;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    background: var(--bg-tertiary);
+    padding: 0.125rem 0.5rem;
+    border-radius: 1rem;
+}
+
+.column-body {
+    flex: 1;
+    padding: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    overflow-y: auto;
+}
+
+.kanban-card {
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    cursor: pointer;
+    transition: border-color 0.2s ease, transform 0.15s ease;
+}
+
+.kanban-card:hover {
+    border-color: var(--accent-primary);
+    transform: translateY(-1px);
+}
+
+.card-title {
+    font-weight: 600;
+    font-size: 0.8125rem;
+    margin-bottom: 0.25rem;
+}
+
+.card-desc {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+}
+
+.card-labels {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+    margin-bottom: 0.375rem;
+}
+
+.card-label {
+    font-size: 0.625rem;
+    padding: 0.125rem 0.375rem;
+    border-radius: 0.25rem;
+    background: rgba(108, 99, 255, 0.15);
+    color: var(--accent-primary);
+    border: 1px solid rgba(108, 99, 255, 0.3);
+}
+
+.card-priority {
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.priority-p0-critical {
+    color: var(--danger);
+}
+
+.priority-p1-high {
+    color: var(--warning);
+}
+
+.priority-p2-medium {
+    color: var(--accent-secondary);
+}
+
+.priority-p3-low {
+    color: var(--text-secondary);
+}
