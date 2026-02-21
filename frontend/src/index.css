@@ -1,21 +1,83 @@
-:root {
-  --bg-primary: #0a0a0f;
-  --bg-secondary: #12121a;
-  --bg-tertiary: #1a1a2e;
-  --text-primary: #e8e8f0;
-  --text-secondary: #8888a0;
-  --accent-primary: #6c63ff;
-  --accent-secondary: #4ecdc4;
-  --border: #2a2a3e;
-  --danger: #ff6b6b;
-  --warning: #ffd93d;
-  --success: #4ecdc4;
+/* ── Design System: Warm Research ── */
+/* Journal-like, warm tones, friendly. Inspired by research notebooks. */
 
-  font-family: 'Inter', system-ui, -apple-system, sans-serif;
-  color: var(--text-primary);
-  background-color: var(--bg-primary);
-  line-height: 1.5;
-  font-weight: 400;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap');
+
+:root,
+[data-theme="light"] {
+  --bg-primary: #fdf8f4;
+  --bg-secondary: #f8f0e8;
+  --bg-tertiary: #f0e6da;
+  --bg-hover: #ebe0d2;
+  --bg-panel: #fdf8f4;
+  --bg-input: #ffffff;
+  --bg-card: #ffffff;
+  --bg-overlay: rgba(40, 30, 20, 0.35);
+
+  --text-primary: #2c2418;
+  --text-secondary: #7a6e5f;
+  --text-tertiary: #b0a494;
+  --text-inverse: #fdf8f4;
+
+  --accent: #c06830;
+  --accent-hover: #a85828;
+  --accent-subtle: rgba(192, 104, 48, 0.08);
+  --accent-border: rgba(192, 104, 48, 0.2);
+
+  --teal: #2a9d8f;
+  --teal-subtle: rgba(42, 157, 143, 0.08);
+
+  --border: #e6dace;
+  --border-subtle: #f0e6da;
+  --shadow-sm: 0 1px 2px rgba(40, 30, 20, 0.04);
+  --shadow-md: 0 4px 12px rgba(40, 30, 20, 0.06);
+  --shadow-lg: 0 8px 24px rgba(40, 30, 20, 0.08);
+  --shadow-card: 0 1px 3px rgba(40, 30, 20, 0.05);
+
+  --danger: #c44;
+  --warning: #c08830;
+  --success: #2a9d8f;
+  --info: #5080c0;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg-primary: #1a1612;
+  --bg-secondary: #231e18;
+  --bg-tertiary: #2d2620;
+  --bg-hover: #38302a;
+  --bg-panel: #231e18;
+  --bg-input: #1a1612;
+  --bg-card: #231e18;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
+
+  --text-primary: #ede4d8;
+  --text-secondary: #9a8e7e;
+  --text-tertiary: #6a5e50;
+  --text-inverse: #1a1612;
+
+  --accent: #e08848;
+  --accent-hover: #c87838;
+  --accent-subtle: rgba(224, 136, 72, 0.1);
+  --accent-border: rgba(224, 136, 72, 0.25);
+
+  --teal: #40c0b0;
+  --teal-subtle: rgba(64, 192, 176, 0.1);
+
+  --border: #3a3228;
+  --border-subtle: #2d2620;
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.15);
+
+  color-scheme: dark;
 }
 
 * {
@@ -25,7 +87,13 @@
 }
 
 body {
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
   min-height: 100vh;
+  font-size: 14px;
 }
 
 #root {
@@ -35,10 +103,60 @@ body {
 }
 
 a {
-  color: var(--accent-primary);
+  color: var(--accent);
   text-decoration: none;
 }
 
 a:hover {
   text-decoration: underline;
+}
+
+/* ── Scrollbar ── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 3px;
+}
+
+/* ── Tooltip ── */
+[data-tooltip] {
+  position: relative;
+}
+
+[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 6px);
+  left: 50%;
+  transform: translateX(-50%) scale(0.95);
+  padding: 4px 10px;
+  background: var(--text-primary);
+  color: var(--bg-primary);
+  font-size: 11px;
+  font-weight: 500;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s, transform 0.15s;
+  z-index: 100;
+}
+
+[data-tooltip]:hover::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+/* ── Headings (use Lora serif) ── */
+h1,
+h2,
+h3 {
+  font-family: 'Lora', Georgia, serif;
 }

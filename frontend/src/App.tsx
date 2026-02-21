@@ -1,45 +1,74 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { KanbanView } from './views/KanbanView'
 import { ChatView } from './views/ChatView'
-import { JourneyView } from './views/JourneyView'
+import type { Task } from './types'
 import './App.css'
 
-type View = 'kanban' | 'chat' | 'journey'
+type Theme = 'light' | 'dark'
 
 function App() {
-    const [activeView, setActiveView] = useState<View>('kanban')
+    const [theme, setTheme] = useState<Theme>('light')
+    const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+    const [panelOpen, setPanelOpen] = useState(false)
+
+    const toggleTheme = () => setTheme(t => t === 'light' ? 'dark' : 'light')
+
+    const handleTaskClick = useCallback((task: Task) => {
+        setSelectedTask(task)
+        setPanelOpen(true)
+    }, [])
+
+    const handleClosePanel = useCallback(() => {
+        setPanelOpen(false)
+        setTimeout(() => setSelectedTask(null), 300)
+    }, [])
 
     return (
-        <div className="app">
-            <header className="app-header">
-                <h1 className="app-title">🧪 Research Toolbox</h1>
-                <nav className="app-nav">
+        <div className="app" data-theme={theme}>
+            <header className="nav-bar">
+                <div className="nav-left">
+                    <span className="nav-logo">📓</span>
+                    <h1 className="nav-title">Research Toolbox</h1>
+                </div>
+                <div className="nav-center">
+                    <div className="nav-pill active" data-tooltip="View your research board">
+                        📋 Board
+                    </div>
+                </div>
+                <div className="nav-right">
                     <button
-                        className={`nav-tab ${activeView === 'kanban' ? 'active' : ''}`}
-                        onClick={() => setActiveView('kanban')}
+                        className="nav-btn"
+                        onClick={toggleTheme}
+                        data-tooltip={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
                     >
-                        📋 Kanban
+                        {theme === 'dark' ? '☀️' : '🌙'}
                     </button>
-                    <button
-                        className={`nav-tab ${activeView === 'chat' ? 'active' : ''}`}
-                        onClick={() => setActiveView('chat')}
-                    >
-                        💬 Chat
-                    </button>
-                    <button
-                        className={`nav-tab ${activeView === 'journey' ? 'active' : ''}`}
-                        onClick={() => setActiveView('journey')}
-                    >
-                        📖 Journey
-                    </button>
-                </nav>
+                </div>
             </header>
 
-            <main className="app-content">
-                {activeView === 'kanban' && <KanbanView />}
-                {activeView === 'chat' && <ChatView />}
-                {activeView === 'journey' && <JourneyView />}
-            </main>
+            <div className="main-layout">
+                <div className={`kanban-area ${panelOpen ? 'with-panel' : ''}`}>
+                    <KanbanView onTaskClick={handleTaskClick} selectedTaskId={selectedTask?.id} />
+                </div>
+
+                <div className={`detail-panel ${panelOpen ? 'open' : ''}`}>
+                    <div className="panel-header">
+                        {selectedTask && (
+                            <div className="panel-task-badge">
+                                <span className={`status-pip s-${selectedTask.status}`} />
+                                <span className="panel-task-status">{selectedTask.status.replace('-', ' ')}</span>
+                            </div>
+                        )}
+                        <h3 className="panel-title">{selectedTask?.title ?? 'Chat'}</h3>
+                        <button className="panel-close" onClick={handleClosePanel} data-tooltip="Close panel">✕</button>
+                    </div>
+                    <div className="panel-body">
+                        <ChatView task={selectedTask} />
+                    </div>
+                </div>
+
+                {panelOpen && <div className="panel-overlay" onClick={handleClosePanel} />}
+            </div>
         </div>
     )
 }
